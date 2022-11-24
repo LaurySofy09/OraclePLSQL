@@ -1,0 +1,44 @@
+-- create table epd_tabla_prueba_lsd as 
+-- select * from epd.epd_planilla 
+-- where cod_area = 0 and cod_enti = 02
+-- 
+-- 
+-- DROP table epd_tabla_prueba_lsd 
+-- 
+-- create table epd_tabla_prueba_lsd as 
+-- select * from epd.epd_planilla 
+-- where cod_area = 0 and cod_enti = 0
+-- 
+-- 
+-- DROP table epd_tabla_prueba_lsd 
+-- 
+-- 
+-- create table epd_tabla_prueba_lsd as 
+-- select COD_AREA, 
+-- COD_ENTI, 
+-- COD_POSICION, 
+-- CED_PROV_INIC, 
+-- CED_TOMO, 
+-- CED_ASIENTO, 
+-- NOMBRES, 
+-- APELLIDO_P, 
+-- APELLIDO_M, 
+-- APELLIDO_C from epd.epd_planilla 
+-- where cod_area = 0 and cod_enti = 0
+-- 
+-- 
+-- insert into epd_tabla_prueba_lsd 
+-- select COD_AREA, 
+--        COD_ENTI, 
+--        COD_POSICION, 
+--        CED_PROV_INIC, 
+--        CED_TOMO, 
+--        CED_ASIENTO, 
+--        NOMBRES, 
+--        APELLIDO_P, 
+--        APELLIDO_M, 
+--        APELLIDO_C from epd.epd_planilla 
+-- where cod_area = 0 and cod_enti = 02 and cod_unidad = 8 and nombres like '%LAURA%'
+-- 
+-- 
+-- commit;

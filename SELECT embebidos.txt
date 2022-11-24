@@ -1,0 +1,15 @@
+cod_area||ltrim(to_char(cod_enti,'00'))||'-'||(select  ROT from epd.epd_entidad where e.cod_area = p.cod_area and e.cod_enti = p.cod_enti ) entidad
+
+
+select sub1.cod_area||ltrim(to_char(sub1.cod_enti,'00'))||'-'||(select  ROT from epd.epd_entidad e where e.cod_area = sub1.cod_area and e.cod_enti = sub1.cod_enti ) entidad, ps.part_001_obj, count(*) cnatidad,
+       decode (ps.part_001_obj, 001, 'Permanete', 002, 'Transitorio',003,'Contingente', 004, 'Transitrio de inversion') tipo
+From (
+       select p.cod_area, p.cod_enti, p.cod_posicion   
+       from epd.epd_planilla P
+       where tib in('T','I') and flg_preg = 1
+	  ) sub1,
+	  epd.epd_posicion ps
+where sub1.cod_area = ps.cod_area and
+      sub1.cod_enti = ps.cod_enti and 
+      sub1.cod_posicion = ps.cod_posicion
+group by sub1.cod_area, sub1.cod_enti, ps.part_001_obj  

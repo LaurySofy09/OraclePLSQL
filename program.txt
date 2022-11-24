@@ -1,0 +1,19 @@
+create or replace function info_pelicula(idpelicula number) return varchar2
+is
+
+v_titulo VARCHAR2(200);
+
+begin
+
+select p.titulo
+into v_titulo
+from pelicula p
+where p.idpelicula = idpelicula;
+
+return v_titulo;
+
+end;
+-------------------------------
+
+select info_pelicula(&idpelicula)
+from dual

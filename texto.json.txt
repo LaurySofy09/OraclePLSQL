@@ -1,0 +1,5 @@
+{
+	"nombre": "Aspiradora",
+	"descripcion": "La aspiradora con mas potencia del mercado.",
+	"precio": 250
+}

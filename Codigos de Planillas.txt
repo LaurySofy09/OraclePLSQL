@@ -1,0 +1,189 @@
+select 
+from sys.dual
+
+
+select fecha_ini_lab, to_char(fecha_ini_lab,'rrrrmmdd'), to_char(fecha_ini_lab,'dd/mm/rrrr') fecha_inicio, tib, estado_p, estado_s, condicion, flg_preg
+from epd.epd_planilla
+where cod_area = 0 and cod_enti = 02 and to_char(fecha_ini_lab,'rrrrmmdd') >= '20220115'
+
+
+select tib, estado_p, estado_s, condicion, flg_preg
+from epd.epd_planilla
+group by tib, estado_p, estado_s, condicion, flg_preg
+  
+select tib, decode(tib, 'T','titulares','I', 'Interinos', 'B', 'Bajas', 'X', 'Traslados')
+from epd.epd_planilla
+group by tib  
+
+
+select estado_p, ltrim(estado_s) estado_s, decode(estado_p||ltrim(estado_s), 'R', 'Regular',
+                                                                             'VA','Vacaciones Adelantadas',
+                                                                                                                'VR','Vacaciones Regulares',
+                                                                                                                'VS','Vacaciones Sin Sueldo',
+                                                                                                                'LC','Licencias con Sueldo',
+                                                                                                                'LS','Licencias sin Suleldo',
+                                                                                                                'BI','Baja del Interino',
+                                                                                                                'BT','Baja del Titular') estados
+from epd.epd_planilla
+group by estado_p, ltrim(estado_s)
+
+
+select condicion, decode(condicion,'P', 'Permanente',
+                                   'N', 'Pensionado',
+                                                  'J', 'Jubilado',
+                                                  'IE','Interino Eventual',
+                                                  'IA','Interino Abierto',
+                                                  'F', 'Interino Hasta FIn de AÒo',
+                                                  'E', 'Eventual',
+                                                  '3', 'PERIODO PROB. DE 3 MESES',
+                                                  '2', 'PERIODO PROB. DE 2 AÒOS',
+                                                  '1', 'PERIODO PROB. DE 1 AÒO','NO disponible xxxxx'  )
+from epd.epd_planilla
+group by condicion
+
+
+select flg_preg, decode(flg_preg,0,'No Cobra',1,'Cobra')
+from epd.epd_planilla
+group by flg_preg
+
+
+
+select * from epd.EPD_CODIGOS
+where indicador = 3
+
+INDICADOR CODIGO ROT                           
+--------- ------ ------------------------------
+        3 P      PERMANENTE                    
+        3 E      EVENTUAL                      
+        3 C      CONTRATO                      
+        3 F      INTERINO HASTA FIN DE A/O     
+        3 1      PERIODO PROB. DE 1 A/O        
+        3 3      PERIODO PROB. DE 3 MESES      
+        3 J      JUBILADO                      
+        3 N      PENSIONADO                    
+        3 IA     INTERINO ABIERTO              
+        3 IE     INTERINO EVENTUAL             
+        3 6      PERIODO PROBATORIO 6 MESES    
+        3 2      PERIODO PROB. DE 2 A/OS       
+        3 3A     PERIODO PROB. DE 3 A/OS       
+        3 TG     TEMPORAL POR GRAVIDEZ         
+14 rows selected
+
+
+
+
+-------------------------
+
+
+
+select tib, decode(tib, 'T','titulares','I', 'Interinos', 'B', 'Bajas', 'X', 'Traslados') ley_tib,
+       estado_p, ltrim(estado_s) estado_s, decode(estado_p||ltrim(estado_s), 'R', 'Regular',
+                                                                             'VA','Vacaciones Adelantadas',
+                                                                                                                'VR','Vacaciones Regulares',
+                                                                                                                'VS','Vacaciones Sin Sueldo',
+                                                                                                                'LC','Licencias con Sueldo',
+                                                                                                                'LS','Licencias sin Suleldo',
+                                                                                                                'BI','Baja del Interino',
+                                                                                                                'BT','Baja del Titular') ley_estados,
+       condicion, decode(condicion,'P', 'Permanente',
+                                   'N', 'Pensionado',
+                                                  'J', 'Jubilado',
+                                                  'IE','Interino Eventual',
+                                                  'IA','Interino Abierto',
+                                                  'F', 'Interino Hasta FIn de AÒo',
+                                                  'E', 'Eventual',
+                                                  '3', 'PERIODO PROB. DE 3 MESES',
+                                                  '2', 'PERIODO PROB. DE 2 AÒOS',
+                                                  '1', 'PERIODO PROB. DE 1 AÒO','NO disponible xxxxx'  ) ley_condicion,
+      flg_preg, decode(flg_preg,0,'No Cobra',1,'Cobra') ley_flg_preg                                                                                                      
+from epd.epd_planilla
+group by tib, estado_p, ltrim(estado_s), condicion, flg_preg
+
+
+select cod_area, cod_enti, cod_posicion, nombres, substr(rpad(ltrim(apellido_c),15,' ')||
+                                                         rpad(ltrim(apellido_p),15,' ')||
+                                                         rpad(ltrim(apellido_m),15,' '),1,15) apellido, 
+       tib, decode(tib, 'T','titulares','I', 'Interinos', 'B', 'Bajas', 'X', 'Traslados') ley_tib,
+       estado_p, ltrim(estado_s) estado_s, decode(estado_p||ltrim(estado_s), 'R', 'Regular',
+                                                                             'VA','Vacaciones Adelantadas',
+                                                                                                                'VR','Vacaciones Regulares',
+                                                                                                                'VS','Vacaciones Sin Sueldo',
+                                                                                                                'LC','Licencias con Sueldo',
+                                                                                                                'LS','Licencias sin Suleldo',
+                                                                                                                'BI','Baja del Interino',
+                                                                                                                'BT','Baja del Titular') ley_estados,
+       condicion, decode(condicion,'P', 'Permanente',
+                                   'N', 'Pensionado',
+                                                  'J', 'Jubilado',
+                                                  'IE','Interino Eventual',
+                                                  'IA','Interino Abierto',
+                                                  'F', 'Interino Hasta FIn de AÒo',
+                                                  'E', 'Eventual',
+                                                  '3', 'PERIODO PROB. DE 3 MESES',
+                                                  '2', 'PERIODO PROB. DE 2 AÒOS',
+                                                  '1', 'PERIODO PROB. DE 1 AÒO','NO disponible xxxxx'  ) ley_condicion, flg_preg, decode(flg_preg,0,'No Cobra',1,'Cobra') ley_flg_preg, to_char(fecha_ini_lab,'dd/mm/rrrr') fecha_inicio
+from epd.epd_planilla
+where cod_Area = 0 and cod_enti = 2 and nombres like '%LAURA%' --and cod_posicion = 326 --150 --300 
+
+
+TIB LEY_TIB   ESTADO_P ESTADO_S LEY_ESTADOS            CONDICION LEY_CONDICION             FLG_PREG LEY_FLG_PREG
+--- --------- -------- -------- ---------------------- --------- ------------------------- -------- ------------
+B   Bajas     B        I        Baja del Interino      1         PERIODO PROB. DE 1 AÒO           0 No Cobra    
+B   Bajas     B        I        Baja del Interino      2         PERIODO PROB. DE 2 AÒOS          0 No Cobra    
+B   Bajas     B        I        Baja del Interino      E         Eventual                         0 No Cobra    
+B   Bajas     B        I        Baja del Interino      F         Interino Hasta FIn de AÒo        0 No Cobra    
+B   Bajas     B        I        Baja del Interino      P         Permanente                       0 No Cobra    
+B   Bajas     B        I        Baja del Interino      IA        Interino Abierto                 0 No Cobra    
+B   Bajas     B        I        Baja del Interino      IE        Interino Eventual                0 No Cobra    
+B   Bajas     B        T        Baja del Titular       3         PERIODO PROB. DE 3 MESES         0 No Cobra    
+B   Bajas     B        T        Baja del Titular       J         Jubilado                         0 No Cobra    
+B   Bajas     B        T        Baja del Titular       N         Pensionado                       0 No Cobra    
+B   Bajas     B        T        Baja del Titular       P         Permanente                       0 No Cobra    
+B   Bajas     R                 Regular                2         PERIODO PROB. DE 2 AÒOS          1 Cobra       
+B   Bajas     R                 Regular                E         Eventual                         1 Cobra       
+I   Interinos L        C        Licencias con Sueldo   E         Eventual                         1 Cobra       
+I   Interinos L        S        Licencias sin Suleldo  1         PERIODO PROB. DE 1 AÒO           0 No Cobra    
+I   Interinos L        S        Licencias sin Suleldo  2         PERIODO PROB. DE 2 AÒOS          0 No Cobra    
+I   Interinos L        S        Licencias sin Suleldo  E         Eventual                         0 No Cobra    
+I   Interinos L        S        Licencias sin Suleldo  F         Interino Hasta FIn de AÒo        0 No Cobra    
+I   Interinos L        S        Licencias sin Suleldo  P         Permanente                       0 No Cobra    
+I   Interinos L        S        Licencias sin Suleldo  IA        Interino Abierto                 0 No Cobra    
+I   Interinos R                 Regular                1         PERIODO PROB. DE 1 AÒO           1 Cobra       
+I   Interinos R                 Regular                2         PERIODO PROB. DE 2 AÒOS          1 Cobra       
+I   Interinos R                 Regular                3         PERIODO PROB. DE 3 MESES         1 Cobra       
+I   Interinos R                 Regular                E         Eventual                         1 Cobra       
+I   Interinos R                 Regular                F         Interino Hasta FIn de AÒo        1 Cobra       
+I   Interinos R                 Regular                J         Jubilado                         1 Cobra       
+I   Interinos R                 Regular                P         Permanente                       1 Cobra       
+I   Interinos R                 Regular                IA        Interino Abierto                 1 Cobra       
+I   Interinos R                 Regular                IE        Interino Eventual                1 Cobra       
+I   Interinos V        A        Vacaciones Adelantadas E         Eventual                         1 Cobra       
+I   Interinos V        R        Vacaciones Regulares   E         Eventual                         1 Cobra       
+I   Interinos V        S        Vacaciones Sin Sueldo  E         Eventual                         0 No Cobra    
+T   titulares L        C        Licencias con Sueldo   P         Permanente                       1 Cobra       
+T   titulares L        S        Licencias sin Suleldo  E         Eventual                         0 No Cobra    
+T   titulares L        S        Licencias sin Suleldo  F         Interino Hasta FIn de AÒo        0 No Cobra    
+T   titulares L        S        Licencias sin Suleldo  J         Jubilado                         0 No Cobra    
+T   titulares L        S        Licencias sin Suleldo  P         Permanente                       0 No Cobra    
+T   titulares L        S        Licencias sin Suleldo  P         Permanente                       1 Cobra       
+T   titulares R                 Regular                1         PERIODO PROB. DE 1 AÒO           1 Cobra       
+T   titulares R                 Regular                2         PERIODO PROB. DE 2 AÒOS          1 Cobra       
+T   titulares R                 Regular                3         PERIODO PROB. DE 3 MESES         1 Cobra       
+T   titulares R                 Regular                E         Eventual                         1 Cobra       
+T   titulares R                 Regular                F         Interino Hasta FIn de AÒo        1 Cobra       
+T   titulares R                 Regular                J         Jubilado                         1 Cobra       
+T   titulares R                 Regular                N         Pensionado                       1 Cobra       
+T   titulares R                 Regular                O         NO disponible xxxxx              1 Cobra       
+T   titulares R                 Regular                P         Permanente                       1 Cobra       
+T   titulares V        A        Vacaciones Adelantadas P         Permanente                       1 Cobra       
+T   titulares V        R        Vacaciones Regulares   P         Permanente                       1 Cobra       
+X   Traslados L        C        Licencias con Sueldo   P         Permanente                       0 No Cobra    
+X   Traslados L        S        Licencias sin Suleldo  P         Permanente                       0 No Cobra    
+X   Traslados R                 Regular                1         PERIODO PROB. DE 1 AÒO           0 No Cobra    
+X   Traslados R                 Regular                2         PERIODO PROB. DE 2 AÒOS          0 No Cobra    
+X   Traslados R                 Regular                E         Eventual                         0 No Cobra    
+X   Traslados R                 Regular                P         Permanente                       0 No Cobra    
+X   Traslados R                 Regular                P         Permanente                       1 Cobra       
+56 rows selected
+
+
